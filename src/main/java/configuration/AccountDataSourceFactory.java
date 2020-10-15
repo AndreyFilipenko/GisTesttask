@@ -12,26 +12,28 @@ public class AccountDataSourceFactory {
 
     private static final String PROPS_FILE_NAME = "db.properties";
 
+    private static PGSimpleDataSource pgDataSource;
+
 
     public static DataSource getPostgreSQLDataSource() {
 
+        if (pgDataSource == null) {
+            Properties props = new Properties();
 
-        Properties props = new Properties();
-        PGSimpleDataSource source = null;
-
-        try (InputStream input = AccountDataSourceFactory.class.getClassLoader().getResourceAsStream(PROPS_FILE_NAME) ) {
-            if (input == null) {
-                throw new IOException("Unable to find "+ PROPS_FILE_NAME);
+            try (InputStream input = AccountDataSourceFactory.class.getClassLoader().getResourceAsStream(PROPS_FILE_NAME)) {
+                if (input == null) {
+                    throw new IOException("Unable to find " + PROPS_FILE_NAME);
+                }
+                props.load(input);
+                pgDataSource = new PGSimpleDataSource();
+                pgDataSource.setURL(props.getProperty("PGSQL_DB_URL"));
+                pgDataSource.setUser(props.getProperty("PGSQL_DB_LOGIN"));
+                pgDataSource.setPassword(props.getProperty("PGSQL_DB_PASSWORD"));
+            } catch (IOException ex) {
+                logger.error("Invoke getPostgreSQLDataSource() with exception.", ex);
             }
-            props.load(input);
-            source = new PGSimpleDataSource();
-            source.setURL(props.getProperty("PGSQL_DB_URL"));
-            source.setUser(props.getProperty("PGSQL_DB_LOGIN"));
-            source.setPassword(props.getProperty("PGSQL_DB_PASSWORD"));
-        } catch (IOException ex) {
-            logger.error("Invoke getPostgreSQLDataSource() with exception.", ex);
         }
 
-        return source;
+        return pgDataSource;
     }
 }
