@@ -1,11 +1,10 @@
 package service;
 
+import exception.RepositoryInternalException;
 import model.Account;
-
-import java.sql.SQLException;
 
 public interface AccountService {
     boolean createAccount(String name, String secondName);
-    Account findAccountByName(String name) throws SQLException;
+    Account findAccountByName(String name) throws RepositoryInternalException;
     boolean updateAccountSecondName(String name, String secondName);
 }

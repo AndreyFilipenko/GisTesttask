@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.postgresql.ds.PGSimpleDataSource;
 
+import javax.annotation.Nullable;
 import javax.sql.DataSource;
 import java.io.*;
 import java.util.Properties;
@@ -15,7 +16,7 @@ public class AccountDataSourceFactory {
 
     private static PGSimpleDataSource pgDataSource;
 
-
+    @Nullable
     public static DataSource getPostgreSQLDataSource() {
 
         if (pgDataSource == null) {

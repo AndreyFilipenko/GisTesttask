@@ -1,11 +1,10 @@
 package repository;
 
+import exception.RepositoryInternalException;
 import model.Account;
-
-import java.sql.SQLException;
 
 public interface AccountRepository {
     int createAccount(String name, String secondName);
-    Account findAccountByName(String name) throws SQLException;
+    Account findAccountByName(String name) throws RepositoryInternalException;
     int updateAccountSecondName(String name, String secondName);
 }
