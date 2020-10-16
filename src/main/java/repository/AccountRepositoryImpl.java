@@ -1,54 +1,74 @@
 package repository;
 
 import model.Account;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import configuration.AccountDataSourceFactory;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class AccountRepositoryImpl implements AccountRepository {
-    private static final Logger logger = Logger.getLogger(AccountRepositoryImpl.class);
+    private static final Logger logger = LogManager.getLogger(AccountRepositoryImpl.class);
     private final DataSource dataSource = AccountDataSourceFactory.getPostgreSQLDataSource();
 
-    private static final String SQL_INSERT_ACCOUNT = "insert into accounts(name, second_name) values ('%s', '%s');";
-    private static final String SQL_SELECT_ACCOUNT_BY_NAME = "select name, second_name from accounts where name = '%s';";
+    private static final String SQL_INSERT_ACCOUNT = "insert into accounts(name, second_name) values (?, ?);";
+    private static final String SQL_SELECT_ACCOUNT_BY_NAME = "select name, second_name from accounts where name = ?;";
+    private static final String SQL_UPDATE_ACCOUNT_SECOND_NAME = "update accounts set second_name = ? where name = ?;";
 
     @Override
-    public int createAccount(String name, String lastName) {
-        String query = String.format(SQL_INSERT_ACCOUNT, name, lastName);
+    public int createAccount(String name, String secondName) {
 
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            int result = statement.executeUpdate(query);
-            if (result==0) {
+             PreparedStatement statement = connection.prepareStatement(SQL_INSERT_ACCOUNT)) {
+            statement.setString(1, name);
+            statement.setString(2, secondName);
+            int result = statement.executeUpdate();
+            if (result == 0) {
                 throw new SQLException("Account create failed, no rows added");
             } else {
                 return result;
             }
         } catch (SQLException ex) {
-            logger.error(String.format("Invoke createAccount(%s, %s) with exception.)", name, lastName), ex);
+            logger.error("Invoke createAccount({}, {}) with exception.)", name, secondName, ex);
         }
         return 0;
     }
 
     @Override
     public Account findAccountByName(String name) throws SQLException {
-        String query = String.format(SQL_SELECT_ACCOUNT_BY_NAME, name);
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
-            if (resultSet.next()) {
-                return new Account(resultSet.getString("name"), resultSet.getString("second_name"));
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ACCOUNT_BY_NAME)) {
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Account(resultSet.getString("name"), resultSet.getString("second_name"));
+                } else {
+                    logger.warn("Invoke findAccountByName({}). Account not found.", name);
+                }
             }
-        }
-        catch (SQLException ex) {
-            logger.error(String.format("Invoke findAccountByName(%s) with exception.)", name), ex);
+        } catch (SQLException ex) {
+            logger.error("Invoke findAccountByName({}) with exception.)", name, ex);
             throw ex;
         }
         return null;
+    }
+
+    @Override
+    public int updateAccountSecondName(String name, String secondName) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_ACCOUNT_SECOND_NAME)){
+            statement.setString(2, name);
+            statement.setString(1, secondName);
+            int result = statement.executeUpdate();
+            if (result == 0) {
+                throw new SQLException("Account update failed, no rows changed");
+            } else {
+                return result;
+            }
+        } catch (SQLException ex) {
+            logger.error("Invoke updateAccountSecondName({}, {}) with exception.)", name, secondName, ex);
+        }
+        return 0;
     }
 }

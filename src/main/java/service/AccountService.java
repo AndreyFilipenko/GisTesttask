@@ -7,4 +7,5 @@ import java.sql.SQLException;
 public interface AccountService {
     boolean createAccount(String name, String secondName);
     Account findAccountByName(String name) throws SQLException;
+    boolean updateAccountSecondName(String name, String secondName);
 }

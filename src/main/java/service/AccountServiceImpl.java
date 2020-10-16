@@ -19,4 +19,10 @@ public class AccountServiceImpl implements AccountService {
     public Account findAccountByName(String name) throws SQLException {
         return repository.findAccountByName(name);
     }
+
+    @Override
+    public boolean updateAccountSecondName(String name, String secondName) {
+        int result = repository.updateAccountSecondName(name, secondName);
+        return result != 0;
+    }
 }

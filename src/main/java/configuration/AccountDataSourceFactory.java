@@ -1,6 +1,7 @@
 package configuration;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
@@ -8,7 +9,7 @@ import java.io.*;
 import java.util.Properties;
 
 public class AccountDataSourceFactory {
-    private static final Logger logger = Logger.getLogger(AccountDataSourceFactory.class);
+    private static final Logger logger = LogManager.getLogger(AccountDataSourceFactory.class);
 
     private static final String PROPS_FILE_NAME = "db.properties";
 

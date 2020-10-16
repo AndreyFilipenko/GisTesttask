@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet("/account/find-by-name")
-public class FindAccountByNameController extends HttpServlet {
+public class AccountFindByNameController extends HttpServlet {
     private final AccountService service = AccountServiceFactory.getAccountService();
 
     @Override
