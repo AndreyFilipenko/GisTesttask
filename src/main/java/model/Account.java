@@ -1,10 +1,10 @@
 package model;
 
-public class AccountModel {
+public class Account {
     private final String name;
     private final String secondName;
 
-    public AccountModel(String name, String secondName) {
+    public Account(String name, String secondName) {
         this.name = name;
         this.secondName = secondName;
     }

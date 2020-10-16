@@ -13,13 +13,13 @@ import java.io.IOException;
 
 @WebServlet("/account/create")
 public class AccountCreationController extends HttpServlet {
+    private final AccountService service = AccountServiceFactory.getAccountService();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         AccountDto accountDto = mapper.readValue(req.getInputStream(), AccountDto.class);
 
-        AccountService service = AccountServiceFactory.getAccountService();
         boolean result = service.createAccount(accountDto.getName(), accountDto.getSecondName());
         if (result) {
             resp.setStatus(HttpServletResponse.SC_OK);
