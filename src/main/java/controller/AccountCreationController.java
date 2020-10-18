@@ -15,7 +15,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 
 @WebServlet("/account/create")
 public class AccountCreationController extends HttpServlet {
-    private final AccountService service = AccountServiceFactory.getAccountService();
+    private final AccountService accountService = AccountServiceFactory.getAccountService();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -25,7 +25,7 @@ public class AccountCreationController extends HttpServlet {
             return;
         }
 
-        boolean result = service.createAccount(accountDto.getName(), accountDto.getSecondName());
+        boolean result = accountService.createAccount(accountDto.getName(), accountDto.getSecondName());
         resp.setStatus(result ? SC_OK : SC_INTERNAL_SERVER_ERROR);
     }
 }

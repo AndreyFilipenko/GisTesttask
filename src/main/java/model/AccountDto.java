@@ -26,6 +26,20 @@ public class AccountDto {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountDto that = (AccountDto) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(secondName, that.secondName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, secondName);
+    }
+
+    @Override
     public String toString() {
         return "AccountDto{" +
                 "name='" + name + '\'' +
