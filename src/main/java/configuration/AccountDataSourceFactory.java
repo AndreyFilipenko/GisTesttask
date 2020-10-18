@@ -9,12 +9,15 @@ import javax.sql.DataSource;
 import java.io.*;
 import java.util.Properties;
 
-public class AccountDataSourceFactory {
+public final class AccountDataSourceFactory {
     private static final Logger logger = LogManager.getLogger(AccountDataSourceFactory.class);
 
     private static final String PROPS_FILE_NAME = "db.properties";
 
     private static PGSimpleDataSource pgDataSource;
+
+    private AccountDataSourceFactory() {
+    }
 
     @Nullable
     public static DataSource getPostgreSQLDataSource() {

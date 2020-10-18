@@ -18,6 +18,9 @@
         <postgresql.version>42.2.17</postgresql.version>
         <log4j.version>2.13.3</log4j.version>
         <findbugs.jsr305.version>3.0.2</findbugs.jsr305.version>
+        <junit.version>4.13.1</junit.version>
+        <assertj.version>3.17.2</assertj.version>
+        <mockito.version>1.10.19</mockito.version>
     </properties>
 
     <dependencies>
@@ -68,6 +71,28 @@
             <artifactId>jsr305</artifactId>
             <version>${findbugs.jsr305.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 

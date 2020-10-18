@@ -20,6 +20,10 @@ public class AccountCreationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         AccountDto accountDto = JsonUtil.parseFromInputStream(req.getInputStream(), AccountDto.class);
+        if (accountDto == null) {
+            resp.setStatus(SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
 
         boolean result = service.createAccount(accountDto.getName(), accountDto.getSecondName());
         resp.setStatus(result ? SC_OK : SC_INTERNAL_SERVER_ERROR);

@@ -6,7 +6,11 @@ import repository.AccountRepository;
 import repository.AccountRepositoryFactory;
 
 public class AccountServiceImpl implements AccountService {
-    private final AccountRepository repository = AccountRepositoryFactory.getAccountRepository();
+    private final AccountRepository repository;
+
+    public AccountServiceImpl(AccountRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public boolean createAccount(String name, String secondName) {

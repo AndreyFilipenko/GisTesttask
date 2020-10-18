@@ -20,6 +20,10 @@ public class AccountOperationController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         AccountDto accountDto = JsonUtil.parseFromInputStream(req.getInputStream(), AccountDto.class);
+        if (accountDto == null) {
+            resp.setStatus(SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
 
         boolean result = service.updateAccountSecondName(accountDto.getName(), accountDto.getSecondName());
         resp.setStatus(result ? SC_OK : SC_INTERNAL_SERVER_ERROR);

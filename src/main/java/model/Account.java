@@ -20,6 +20,20 @@ public class Account {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equals(name, account.name) &&
+                Objects.equals(secondName, account.secondName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, secondName);
+    }
+
+    @Override
     public String toString() {
         return "AccountModel{" +
                 "name='" + name + '\'' +
