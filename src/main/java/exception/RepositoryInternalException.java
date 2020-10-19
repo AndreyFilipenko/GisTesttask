@@ -1,6 +1,6 @@
 package exception;
 
-public class RepositoryInternalException extends java.lang.Exception {
+public class RepositoryInternalException extends Exception {
     public RepositoryInternalException(String message) {
         super(message);
     }

@@ -6,7 +6,8 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.annotation.Nullable;
 import javax.sql.DataSource;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public final class AccountDataSourceFactory {
@@ -21,7 +22,6 @@ public final class AccountDataSourceFactory {
 
     @Nullable
     public static DataSource getPostgreSQLDataSource() {
-
         if (pgDataSource == null) {
             Properties props = new Properties();
 
