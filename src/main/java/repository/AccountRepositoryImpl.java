@@ -5,8 +5,12 @@ import model.Account;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import javax.annotation.Nullable;
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class AccountRepositoryImpl implements AccountRepository {
@@ -14,7 +18,9 @@ public class AccountRepositoryImpl implements AccountRepository {
     private final DataSource dataSource;
 
     private static final String SQL_INSERT_ACCOUNT = "insert into accounts(name, second_name) values (?, ?)";
+
     private static final String SQL_SELECT_ACCOUNT_BY_NAME = "select name, second_name from accounts where name = ?";
+
     private static final String SQL_UPDATE_ACCOUNT_SECOND_NAME = "update accounts set second_name = ? where name = ?";
 
     public AccountRepositoryImpl(DataSource dataSource) {
@@ -23,23 +29,22 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public int createAccount(String name, String secondName) {
-
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_INSERT_ACCOUNT)) {
             statement.setString(1, name);
             statement.setString(2, secondName);
             int result = statement.executeUpdate();
             if (result == 0) {
-                throw new SQLException("Account create failed, no rows added");
-            } else {
-                return result;
+                logger.warn("Invoke createAccount({}, {}). Account create failed, no rows added", name, secondName);
             }
+            return result;
         } catch (SQLException ex) {
             logger.error("Invoke createAccount({}, {}) with exception.)", name, secondName, ex);
         }
         return 0;
     }
 
+    @Nullable
     @Override
     public Account findAccountByName(String name) throws RepositoryInternalException {
         try (Connection connection = dataSource.getConnection();
@@ -67,10 +72,9 @@ public class AccountRepositoryImpl implements AccountRepository {
             statement.setString(1, secondName);
             int result = statement.executeUpdate();
             if (result == 0) {
-                throw new SQLException("Account update failed, no rows changed");
-            } else {
-                return result;
+                logger.warn("Invoke updateAccountSecondName({}, {}). Account update failed, no rows changed", name, secondName);
             }
+            return result;
         } catch (SQLException ex) {
             logger.error("Invoke updateAccountSecondName({}, {}) with exception.)", name, secondName, ex);
         }
