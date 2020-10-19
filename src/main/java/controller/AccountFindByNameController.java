@@ -22,7 +22,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 public class AccountFindByNameController extends HttpServlet {
     private final Logger logger = LogManager.getLogger(AccountFindByNameController.class);
 
-    private final AccountService service = AccountServiceFactory.getAccountService();
+    private final AccountService accountService = AccountServiceFactory.getAccountService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -33,7 +33,7 @@ public class AccountFindByNameController extends HttpServlet {
         }
 
         try {
-            Account resultAccount = service.findAccountByName(accountNameDto.getName());
+            Account resultAccount = accountService.findAccountByName(accountNameDto.getName());
             if (resultAccount != null) {
                 HttpUtil.writeJsonResponse(resp, resultAccount);
                 resp.setStatus(SC_OK);

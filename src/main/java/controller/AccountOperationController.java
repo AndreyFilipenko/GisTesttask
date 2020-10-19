@@ -11,11 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static javax.servlet.http.HttpServletResponse.*;
+import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 @WebServlet("/account/update")
 public class AccountOperationController extends HttpServlet {
-    private final AccountService service = AccountServiceFactory.getAccountService();
+    private final AccountService accountService = AccountServiceFactory.getAccountService();
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -25,7 +26,7 @@ public class AccountOperationController extends HttpServlet {
             return;
         }
 
-        boolean result = service.updateAccountSecondName(accountDto.getName(), accountDto.getSecondName());
+        boolean result = accountService.updateAccountSecondName(accountDto.getName(), accountDto.getSecondName());
         resp.setStatus(result ? SC_OK : SC_INTERNAL_SERVER_ERROR);
     }
 }
