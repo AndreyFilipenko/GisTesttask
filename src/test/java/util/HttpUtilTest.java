@@ -2,15 +2,15 @@ package util;
 
 import model.Account;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class HttpUtilTest {
 
@@ -19,7 +19,7 @@ public class HttpUtilTest {
         Account account = new Account("name", "secondName");
         HttpServletResponse resp = mock(HttpServletResponse.class);
         PrintWriter printWriter = mock(PrintWriter.class);
-        Mockito.when(resp.getWriter()).thenReturn(printWriter);
+        when(resp.getWriter()).thenReturn(printWriter);
 
         HttpUtil.writeJsonResponse(resp, account);
         verify(resp, times(1)).setContentType(HttpUtil.JSON_CONTENT_TYPE);

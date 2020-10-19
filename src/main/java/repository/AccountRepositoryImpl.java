@@ -17,11 +17,11 @@ public class AccountRepositoryImpl implements AccountRepository {
     private static final Logger logger = LogManager.getLogger(AccountRepositoryImpl.class);
     private final DataSource dataSource;
 
-    private static final String SQL_INSERT_ACCOUNT = "insert into accounts(name, second_name) values (?, ?)";
+    public static final String SQL_INSERT_ACCOUNT = "insert into accounts(name, second_name) values (?, ?)";
 
-    private static final String SQL_SELECT_ACCOUNT_BY_NAME = "select name, second_name from accounts where name = ?";
+    public static final String SQL_SELECT_ACCOUNT_BY_NAME = "select name, second_name from accounts where name = ?";
 
-    private static final String SQL_UPDATE_ACCOUNT_SECOND_NAME = "update accounts set second_name = ? where name = ?";
+    public static final String SQL_UPDATE_ACCOUNT_SECOND_NAME = "update accounts set second_name = ? where name = ?";
 
     public AccountRepositoryImpl(DataSource dataSource) {
         this.dataSource = Objects.requireNonNull(dataSource, "Data source can't be null");

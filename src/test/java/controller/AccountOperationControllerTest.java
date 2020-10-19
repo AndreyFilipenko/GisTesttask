@@ -1,7 +1,6 @@
 package controller;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.mockito.internal.util.reflection.FieldSetter;
 import service.AccountServiceImpl;
 
@@ -10,9 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class AccountOperationControllerTest {
 
@@ -25,13 +25,13 @@ public class AccountOperationControllerTest {
 
         accountOperationController.doPut(req, resp);
 
-        Mockito.verify(resp, times(1)).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        verify(resp, times(1)).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 
     @Test
     public void doPutSuccessfulCreate() throws NoSuchFieldException, IOException {
         AccountServiceImpl accountService = mock(AccountServiceImpl.class);
-        Mockito.when(accountService.updateAccountSecondName("name", "secondName")).thenReturn(true);
+        when(accountService.updateAccountSecondName("name", "secondName")).thenReturn(true);
         String jsonString = "{" +
                 "\"name\":\"name\"," +
                 "\"secondName\":\"secondName\"" +
@@ -43,10 +43,10 @@ public class AccountOperationControllerTest {
 
         HttpServletRequest req = mock(HttpServletRequest.class);
         HttpServletResponse resp = mock(HttpServletResponse.class);
-        Mockito.when(req.getInputStream()).thenReturn(servletInputStream);
+        when(req.getInputStream()).thenReturn(servletInputStream);
 
         accountOperationController.doPut(req, resp);
 
-        Mockito.verify(resp, times(1)).setStatus(HttpServletResponse.SC_OK);
+        verify(resp, times(1)).setStatus(HttpServletResponse.SC_OK);
     }
 }
