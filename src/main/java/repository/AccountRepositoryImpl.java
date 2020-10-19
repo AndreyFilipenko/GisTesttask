@@ -62,7 +62,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public int updateAccountSecondName(String name, String secondName) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_ACCOUNT_SECOND_NAME)){
+             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_ACCOUNT_SECOND_NAME)) {
             statement.setString(2, name);
             statement.setString(1, secondName);
             int result = statement.executeUpdate();
